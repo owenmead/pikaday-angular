@@ -1,0 +1,32 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular Pikaday</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="components/pikaday-time/css/pikaday.css">
+  </head>
+  <body ng-app="pikaApp">
+
+    <table ng-init="theValue = 'hi'">
+      <tr>
+        <th>Value</th>
+        <td>{{ theValue }}</td>
+      </tr>
+      <tr>
+        <th>Input</th>
+        <td><input type="text" ng-model="theValue"></td>
+      </tr>
+      <tr>
+        <th>Pikadaytime</th>
+        <td><pikadaytime></pikadaytime></td>
+      </tr>
+    </table>
+
+    <script src="components/angular/angular.js"></script>
+    <script src="components/pikaday-time/pikaday.js"></script>
+    <script src="scripts.js"></script>
+
+    <script src="//localhost:35729/livereload.js"></script>
+  </body>
+</html>
