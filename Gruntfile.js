@@ -34,6 +34,19 @@ module.exports = function (grunt) {
       }
     },
 
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc',
+        reporter: require('jshint-stylish')
+      },
+      main: {
+        src: [
+          'Gruntfile.js',
+          '<%= project.app %>/scripts.js'
+        ]
+      }
+    },
+
     // The actual grunt server settings
     connect: {
       options: {

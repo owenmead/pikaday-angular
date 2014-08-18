@@ -1,0 +1,8 @@
+{
+  "node": true,
+  "globals": {
+    "angular": false,
+    "moment": false,
+    "Pikaday": false
+  }
+}
