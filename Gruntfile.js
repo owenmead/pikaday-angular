@@ -65,6 +65,10 @@ module.exports = function (grunt) {
                 '/components',
                 connect.static('./components')
               ),
+              connect().use(
+                '/root',
+                connect.static('./')
+              ),
               connect.static(appConfig.app)
             ];
           }
