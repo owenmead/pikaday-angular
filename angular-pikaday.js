@@ -2,7 +2,6 @@
 
 angular.module('angular-pikaday', [])
 .directive('pikaday', function($filter){
-  // Runs during compile
   return {
     require: 'ngModel',
     restrict: 'E', // E = Element
@@ -22,12 +21,12 @@ angular.module('angular-pikaday', [])
         }
       });
 
-      // Clean up Pikaday when scope (this instance) is destroyed
+      // Clean up Pikaday when this directive instance is destroyed
       scope.$on('$destroy', function() {
         picker.destroy();
       });
 
-      // Incoming from model changes
+      // Incoming from model changes, revalidate and force a date type
       ngModel.$formatters.push(function(value) {
         ngModel.$setValidity('pikaday', angular.isDate(value) || value === null || value === '');
         if (angular.isDate(value)) {
@@ -35,7 +34,7 @@ angular.module('angular-pikaday', [])
         }
         return '';
       });
-      // Outgoing... usually from $setViewValue
+      // Outgoing... usually from $setViewValue, again ensuring a date
       ngModel.$parsers.push(function(value) {
          if(ngModel.$isEmpty(value)) {
             ngModel.$setValidity('pikaday', true);
@@ -48,7 +47,7 @@ angular.module('angular-pikaday', [])
       // Handle DOM events for our date picker
       inputDOM.on('blur', function(){
         scope.$apply(function() {
-          picker.hide(); // Prevent picker flash when text editing multiple times
+          picker.hide();
           ngModel.$setViewValue(picker.getDate());
           ngModel.$setValidity('pikaday', (inputDOM.val().length === 0 || picker.getDate() !== null));
         });
@@ -62,8 +61,7 @@ angular.module('angular-pikaday', [])
         }
       });
 
-      // Called when the view needs to be updated
-      // Specify how UI should be updated
+      // Called when the view needs to be updated, again ensure actual date
       ngModel.$render = function() {
         if (angular.isDate(ngModel.$viewValue)) {
           picker.setDate(ngModel.$viewValue, true);
