@@ -29,14 +29,26 @@ angular.module('pikaApp', [])
         picker.destroy();
       });
 
-      inputDOM.on('change', function(){
-        var inputVal = inputDOM.val();
-        ngModel.$setViewValue(picker.getDate());
-        ngModel.$setValidity('pikadaytime', (inputVal.length === 0 || picker.getDate() !== null));
+      // Outgoing... usually from $setViewValue
+      ngModel.$parsers.push(function(value) {
+         if(ngModel.$isEmpty(value)) {
+            ngModel.$setValidity('pikadaytime', true);
+            return null;
+         }
+         ngModel.$setValidity('pikadaytime', angular.isDate(value));
+         return value;
+      });
+
+      inputDOM.on('blur', function(){
+        scope.$apply(function() {
+          picker.hide(); // Prevent picker flash when text editing multiple times
+          ngModel.$setViewValue(picker.getDate());
+          ngModel.$setValidity('pikadaytime', (inputDOM.val().length === 0 || picker.getDate() !== null));
+        });
       });
 
       inputDOM.on('keyup', function(){
-        if (inputDOM.val() === '' && typeof(ngModel.$viewValue) === 'object') {
+        if (inputDOM.val() === '' && angular.isDate(ngModel.$viewValue)) {
           scope.$apply(function() {
             ngModel.$setViewValue(null);
             ngModel.$setValidity('pikadaytime', true);
@@ -46,6 +58,7 @@ angular.module('pikaApp', [])
 
       // Incoming from model changes
       ngModel.$formatters.push(function(value) {
+        ngModel.$setValidity('pikadaytime', angular.isDate(value) || value === null || value === '');
         if (angular.isDate(value)) {
           return value;
         }
