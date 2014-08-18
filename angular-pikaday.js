@@ -6,7 +6,7 @@ angular.module('angular-pikaday', [])
   return {
     require: 'ngModel',
     restrict: 'E', // E = Element
-    template: '<input type="text"><br>{{theValue}}',
+    template: '<input type="text">',
 
     link: function(scope, element, attrs, ngModel) {
       var inputDOM = element.find('input');
