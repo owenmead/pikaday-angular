@@ -4,7 +4,7 @@ angular.module('pikaApp', [])
 .controller('myCtrl', function($scope) {
   $scope.theValue = null; //new Date();
 })
-.directive('pikadaytime', function($filter){
+.directive('pikaday', function($filter){
   // Runs during compile
   return {
     require: 'ngModel',
@@ -32,7 +32,7 @@ angular.module('pikaApp', [])
 
       // Incoming from model changes
       ngModel.$formatters.push(function(value) {
-        ngModel.$setValidity('pikadaytime', angular.isDate(value) || value === null || value === '');
+        ngModel.$setValidity('pikaday', angular.isDate(value) || value === null || value === '');
         if (angular.isDate(value)) {
           return value;
         }
@@ -41,10 +41,10 @@ angular.module('pikaApp', [])
       // Outgoing... usually from $setViewValue
       ngModel.$parsers.push(function(value) {
          if(ngModel.$isEmpty(value)) {
-            ngModel.$setValidity('pikadaytime', true);
+            ngModel.$setValidity('pikaday', true);
             return null;
          }
-         ngModel.$setValidity('pikadaytime', angular.isDate(value));
+         ngModel.$setValidity('pikaday', angular.isDate(value));
          return value;
       });
 
@@ -53,14 +53,14 @@ angular.module('pikaApp', [])
         scope.$apply(function() {
           picker.hide(); // Prevent picker flash when text editing multiple times
           ngModel.$setViewValue(picker.getDate());
-          ngModel.$setValidity('pikadaytime', (inputDOM.val().length === 0 || picker.getDate() !== null));
+          ngModel.$setValidity('pikaday', (inputDOM.val().length === 0 || picker.getDate() !== null));
         });
       });
       inputDOM.on('keyup', function(){
         if (inputDOM.val() === '' && angular.isDate(ngModel.$viewValue)) {
           scope.$apply(function() {
             ngModel.$setViewValue(null);
-            ngModel.$setValidity('pikadaytime', true);
+            ngModel.$setValidity('pikaday', true);
           });
         }
       });
