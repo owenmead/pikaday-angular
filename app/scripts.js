@@ -24,11 +24,19 @@ angular.module('pikaApp', [])
       }
       var picker = new Pikaday(pikadayOpts);
 
-      // Clean up Pikaday when scope is destroyed
+      // Clean up Pikaday when scope (this instance) is destroyed
       scope.$on('$destroy', function() {
         picker.destroy();
       });
 
+      // Incoming from model changes
+      ngModel.$formatters.push(function(value) {
+        ngModel.$setValidity('pikadaytime', angular.isDate(value) || value === null || value === '');
+        if (angular.isDate(value)) {
+          return value;
+        }
+        return '';
+      });
       // Outgoing... usually from $setViewValue
       ngModel.$parsers.push(function(value) {
          if(ngModel.$isEmpty(value)) {
@@ -39,6 +47,7 @@ angular.module('pikaApp', [])
          return value;
       });
 
+      // Handle DOM events for our date picker
       inputDOM.on('blur', function(){
         scope.$apply(function() {
           picker.hide(); // Prevent picker flash when text editing multiple times
@@ -46,7 +55,6 @@ angular.module('pikaApp', [])
           ngModel.$setValidity('pikadaytime', (inputDOM.val().length === 0 || picker.getDate() !== null));
         });
       });
-
       inputDOM.on('keyup', function(){
         if (inputDOM.val() === '' && angular.isDate(ngModel.$viewValue)) {
           scope.$apply(function() {
@@ -55,16 +63,6 @@ angular.module('pikaApp', [])
           });
         }
       });
-
-      // Incoming from model changes
-      ngModel.$formatters.push(function(value) {
-        ngModel.$setValidity('pikadaytime', angular.isDate(value) || value === null || value === '');
-        if (angular.isDate(value)) {
-          return value;
-        }
-        return '';
-      })
-
 
       // Called when the view needs to be updated
       // Specify how UI should be updated
