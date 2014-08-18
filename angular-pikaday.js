@@ -13,13 +13,20 @@ angular.module('angular-pikaday', [])
       // Setup Pikaday
       var picker = new Pikaday({
         field: inputDOM[0],
-        format: 'D MMM YYYY',
         onSelect: function(selectedDate) {
           scope.$apply(function() {
             ngModel.$setViewValue(selectedDate);
           });
         }
       });
+
+      // Allow date format to be set and dynamically changed
+      attrs.$observe('format', function(format) {
+        if (format) {
+          picker._o.format = format;
+          ngModel.$render();
+        }
+      })
 
       // Clean up Pikaday when this directive instance is destroyed
       scope.$on('$destroy', function() {

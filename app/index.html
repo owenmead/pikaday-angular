@@ -23,7 +23,11 @@
       </tr>
       <tr>
         <th>Pikaday</th>
-        <td><pikaday ng-model="theValue"></pikaday></td>
+        <td><pikaday format="{{pikaformat}}" ng-model="theValue"></pikaday></td>
+      </tr>
+      <tr ng-init="pikaformat = 'D MMM YYYY'">
+        <th>Format</th>
+        <td><input type="text" ng-model="pikaformat"></td>
       </tr>
     </table>
 
