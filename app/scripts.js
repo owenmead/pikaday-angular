@@ -29,12 +29,20 @@ angular.module('pikaApp', [])
         picker.destroy();
       });
 
-       inputDOM.on('change', function(){
-        if (inputDOM.val() === '' || !inputDOM.val()) {
-          ngModel.$setValidity('pikadaytime', true);
-          scope.$apply();
+      inputDOM.on('change', function(){
+        var inputVal = inputDOM.val();
+        ngModel.$setViewValue(picker.getDate());
+        ngModel.$setValidity('pikadaytime', (inputVal.length === 0 || picker.getDate() !== null));
+      });
+
+      inputDOM.on('keyup', function(){
+        if (inputDOM.val() === '' && typeof(ngModel.$viewValue) === 'object') {
+          scope.$apply(function() {
+            ngModel.$setViewValue(null);
+            ngModel.$setValidity('pikadaytime', true);
+          });
         }
-       })
+      });
 
       // Incoming from model changes
       ngModel.$formatters.push(function(value) {
@@ -55,7 +63,6 @@ angular.module('pikaApp', [])
           picker.setDate(null, true);
         }
       };
-
     }
   };
 });
