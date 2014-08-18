@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('pikaApp', [])
 .controller('myCtrl', function($scope) {
   $scope.theValue = null; //new Date();
@@ -13,7 +15,7 @@ angular.module('pikaApp', [])
       var inputDOM = element.find('input');
 
       // Setup Pikaday
-      pikadayOpts = {
+      var picker = new Pikaday({
         field: inputDOM[0],
         format: 'D MMM YYYY',
         onSelect: function(selectedDate) {
@@ -21,8 +23,7 @@ angular.module('pikaApp', [])
             ngModel.$setViewValue(selectedDate);
           });
         }
-      }
-      var picker = new Pikaday(pikadayOpts);
+      });
 
       // Clean up Pikaday when scope (this instance) is destroyed
       scope.$on('$destroy', function() {
