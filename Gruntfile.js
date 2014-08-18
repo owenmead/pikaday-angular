@@ -23,7 +23,8 @@ module.exports = function (grunt) {
         files: [
           '<%= project.app %>/{,*/}*.js',
           '<%= project.app %>/{,*/}*.html',
-          '<%= project.app %>/{,*/}*.css'
+          '<%= project.app %>/{,*/}*.css',
+          './angular-pikaday.js'
         ],
         options: {
           livereload: '<%= connect.options.livereload %>'
