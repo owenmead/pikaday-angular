@@ -43,7 +43,8 @@ module.exports = function (grunt) {
       main: {
         src: [
           'Gruntfile.js',
-          '<%= project.app %>/scripts.js'
+          '<%= project.app %>/scripts.js',
+          './angular-pikaday.js'
         ]
       }
     },

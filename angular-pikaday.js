@@ -26,7 +26,7 @@ angular.module('angular-pikaday', [])
           picker._o.format = format;
           ngModel.$render();
         }
-      })
+      });
 
       // Clean up Pikaday when this directive instance is destroyed
       scope.$on('$destroy', function() {
