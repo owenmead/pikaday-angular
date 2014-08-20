@@ -36,7 +36,7 @@ angular.module('angular-pikaday', [])
       var optionUpdateCallback = function() {
         angular.extend(ngModel.picker._o, pikaconfig.option_overrides);
         ngModel.$render();
-      }
+      };
       pikaconfig.pikadayObservers.push(optionUpdateCallback);
 
       // Clean up Pikaday when this directive instance is destroyed
