@@ -29,10 +29,22 @@
         <th>Format</th>
         <td><input type="text" ng-model="pikaformat"></td>
       </tr>
+      <tr>
+        <th>Local</th>
+        <td><button ng-click="changeLocal()">Change</button> {{currentLocal}}</td>
+      </tr>
+      <!--
+      <tr>
+        <th>pikaconfig</th>
+        <td><pre>{{pikaconfig|json}}</pre></td>
+      </tr>
+      -->
     </table>
 
     <script src="components/angular/angular.js"></script>
     <script src="components/moment/moment.js"></script>
+    <script src="components/moment/locale/es.js"></script>
+    <script src="components/moment/locale/en-ca.js"></script>
     <script src="components/pikaday/pikaday.js"></script>
     <script src="root/angular-pikaday.js"></script>
     <script src="scripts.js"></script>
