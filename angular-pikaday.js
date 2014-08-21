@@ -46,7 +46,7 @@ angular.module('angular-pikaday', [])
       });
 
       // Allow date format to be set and dynamically changed
-      attrs.$observe('format', function(format) {
+      attrs.$observe('pikaday', function(format) {
         if (format) {
           ngModel.picker._o.format = format;
           inputElement.val(ngModel.picker.toString());
