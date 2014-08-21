@@ -23,7 +23,7 @@
       </tr>
       <tr>
         <th>Pikaday</th>
-        <td><input type="text" pikaday format="{{pikaformat}}" ng-model="theValue" placeholder="Select Date"></td>
+        <td><input type="text" pikaday format="{{pikaformat}}" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-model="theValue" placeholder="Select Date"></td>
       </tr>
       <tr ng-init="pikaformat = 'D MMM YYYY'">
         <th>Format</th>
