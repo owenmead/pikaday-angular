@@ -16,6 +16,18 @@ _Yeah... need to fill this out..._
 
 For now look in app/ for an example of how to use it.
 
+Want to use Pikadaytime to allow time selection, just add this override to your bower.json
+```json
+"overrides": {
+  "angular-pikaday": {
+    "dependencies": {
+      "angular": "1.3.0-beta.18",
+      "pikaday-time": "~1.2.0",
+      "moment": "~2.8.1"
+    }
+  }
+}
+```
 
 ## Contributions
 If there are better ways to do things, please send in pull requests. I'd love to learn. Or sending in issues works to, and I'll try to fix them as I have spare cycles.
