@@ -15,15 +15,12 @@ angular.module('angular-pikaday', [])
 .directive('pikaday', function(pikaconfig){
   return {
     require: 'ngModel',
-    restrict: 'E', // E = Element
-    template: '<input type="text">',
+    restrict: 'A', // A = Attribute
 
-    link: function(scope, element, attrs, ngModel) {
-      var inputDOM = element.find('input');
-
+    link: function(scope, inputElement, attrs, ngModel) {
       // Setup Pikaday
       ngModel.picker = new Pikaday({
-        field: inputDOM[0],
+        field: inputElement[0],
         onSelect: function(selectedDate) {
           scope.$apply(function() {
             ngModel.$setViewValue(selectedDate);
@@ -35,7 +32,7 @@ angular.module('angular-pikaday', [])
       // Using observer pattern so as not to pollute scope or add a bunch of watches
       var optionUpdateCallback = function() {
         angular.extend(ngModel.picker._o, pikaconfig.option_overrides);
-        ngModel.$render();
+        inputElement.val(ngModel.picker.toString());
       };
       pikaconfig.pikadayObservers.push(optionUpdateCallback);
 
@@ -52,54 +49,35 @@ angular.module('angular-pikaday', [])
       attrs.$observe('format', function(format) {
         if (format) {
           ngModel.picker._o.format = format;
-          ngModel.$render();
+          inputElement.val(ngModel.picker.toString());
+          ngModel.$validate();
         }
       });
 
       // Incoming from model changes, revalidate and force a date type
       ngModel.$formatters.push(function(value) {
-        ngModel.$setValidity('pikaday', angular.isDate(value) || value === null || value === '');
-        if (angular.isDate(value)) {
-          return value;
+        if(angular.isDate(value)) {
+          ngModel.picker.setDate(value, true);
+          return ngModel.picker.toString();
         }
         return '';
       });
       // Outgoing... usually from $setViewValue, again ensuring a date
       ngModel.$parsers.push(function(value) {
-         if(ngModel.$isEmpty(value)) {
-            ngModel.$setValidity('pikaday', true);
-            return null;
-         }
-         ngModel.$setValidity('pikaday', angular.isDate(value));
-         return value;
-      });
-
-      // Handle DOM events for our date picker
-      inputDOM.on('blur', function(){
-        scope.$apply(function() {
-          ngModel.picker.hide();
-          ngModel.$setViewValue(ngModel.picker.getDate());
-          ngModel.$setValidity('pikaday', (inputDOM.val().length === 0 || ngModel.picker.getDate() !== null));
-        });
-      });
-      inputDOM.on('keyup', function(){
-        if (inputDOM.val() === '' && angular.isDate(ngModel.$viewValue)) {
-          scope.$apply(function() {
-            ngModel.$setViewValue(null);
-            ngModel.$setValidity('pikaday', true);
-          });
+        if(ngModel.$isEmpty(value)) {
+           ngModel.$setValidity('pikaday', true);
+           return null;
         }
-      });
 
-      // Called when the view needs to be updated, again ensure actual date
-      ngModel.$render = function() {
-        if (angular.isDate(ngModel.$viewValue)) {
-          ngModel.picker.setDate(ngModel.$viewValue, true);
-        } else {
-          inputDOM.val('');
-          ngModel.picker.setDate(null, true);
+        var m = moment(value);
+        if (m.isValid()) {
+          ngModel.$setValidity('pikaday', true);
+          return m.toDate();
         }
-      };
+
+        ngModel.$setValidity('pikaday', false);
+        return undefined;
+      });
     }
   };
 });

@@ -21,6 +21,6 @@ input {
 	width: 400px;
 }
 
-.ng-invalid input {
+.ng-invalid {
 	border: 2px solid #F00;
 }
