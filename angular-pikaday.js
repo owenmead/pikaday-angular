@@ -21,12 +21,12 @@ angular.module('angular-pikaday', [])
     link: function(scope, inputElement, attrs, ngModel) {
       // Setup Pikaday
       var options = { field: inputElement[0] };
-      if ( ngModel ){
+      if (ngModel) {
         options.onSelect = function( selectedDate ) {
           scope.$apply(function() {
             ngModel.$setViewValue(selectedDate);
           });
-        }
+        };
       }
 
       scope.picker = new Pikaday( options );
@@ -53,16 +53,16 @@ angular.module('angular-pikaday', [])
         if (format) {
           scope.picker._o.format = format;
           inputElement.val(scope.picker.toString());
-          if( ngModel )
+          if (ngModel) {
             ngModel.$validate();
+          }
         }
       });
 
-      if ( ngModel )
-      {
+      if (ngModel) {
         // Incoming from model changes, revalidate and force a date type
         ngModel.$formatters.push(function(value) {
-          if(angular.isDate(value)) {
+          if (angular.isDate(value)) {
             scope.picker.setDate(value, true);
             return scope.picker.toString();
           }
@@ -70,14 +70,15 @@ angular.module('angular-pikaday', [])
         });
         // Outgoing... usually from $setViewValue, again ensuring a date
         ngModel.$parsers.push(function(value) {
-          if(ngModel.$isEmpty(value)) {
+          if (ngModel.$isEmpty(value)) {
              ngModel.$setValidity('pikaday', true);
              return null;
           }
 
           var m;
-          if ( typeof moment === 'function' )
+          if (typeof moment === 'function') {
               m = moment(value);
+          }
 
           if (m && m.isValid()) {
             ngModel.$setValidity('pikaday', true);
