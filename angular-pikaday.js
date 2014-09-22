@@ -16,7 +16,6 @@ angular.module('angular-pikaday', [])
   return {
     require: '?ngModel',
     restrict: 'A', // A = Attribute
-    scope: {}, // isolate scope
 
     link: function(scope, inputElement, attrs, ngModel) {
       // Setup Pikaday
@@ -29,19 +28,21 @@ angular.module('angular-pikaday', [])
         };
       }
 
-      scope.picker = new Pikaday( options );
+      // Attach picker to element
+      inputElement[0]._pikaday = new Pikaday( options );
+      var picker = inputElement[0]._pikaday;
 
       // We need to update our options
       // Using observer pattern so as not to pollute scope or add a bunch of watches
       var optionUpdateCallback = function() {
-        angular.extend(scope.picker._o, pikaconfig.option_overrides);
-        inputElement.val(scope.picker.toString());
+        angular.extend(picker._o, pikaconfig.option_overrides);
+        inputElement.val(picker.toString());
       };
       pikaconfig.pikadayObservers.push(optionUpdateCallback);
 
       // Clean up Pikaday when this directive instance is destroyed
       scope.$on('$destroy', function() {
-        scope.picker.destroy();
+        picker.destroy();
         // Remove self from observables
         pikaconfig.pikadayObservers.splice(
             pikaconfig.pikadayObservers.indexOf(optionUpdateCallback), 1
@@ -51,8 +52,8 @@ angular.module('angular-pikaday', [])
       // Allow date format to be set and dynamically changed
       attrs.$observe('pikaday', function(format) {
         if (format) {
-          scope.picker._o.format = format;
-          inputElement.val(scope.picker.toString());
+          picker._o.format = format;
+          inputElement.val(picker.toString());
           if (ngModel) {
             ngModel.$validate();
           }
@@ -63,8 +64,8 @@ angular.module('angular-pikaday', [])
         // Incoming from model changes, revalidate and force a date type
         ngModel.$formatters.push(function(value) {
           if (angular.isDate(value)) {
-            scope.picker.setDate(value, true);
-            return scope.picker.toString();
+            picker.setDate(value, true);
+            return picker.toString();
           }
           return '';
         });
