@@ -89,6 +89,9 @@ angular.module('angular-pikaday', [])
           return undefined;
         });
       }
+
+      // Call all update options when spinning up pikaday instance
+      pikaconfig.updatePikadayOptions();
     }
   };
 });
