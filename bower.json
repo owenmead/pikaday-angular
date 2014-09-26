@@ -19,7 +19,7 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "components"
+    "bower_components"
   ],
   "homepage": "https://github.com/owenmead/pikaday-angular",
   "repository": {
