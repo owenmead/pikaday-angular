@@ -22,7 +22,11 @@ angular.module('angular-pikaday', [])
 
     link: function(scope, inputElement, attrs, ngModel) {
       // Setup Pikaday
-      var options = { field: inputElement[0] };
+      var options = {
+        field: inputElement[0],
+        showTime: !!attrs.pikaday.match(timeTokens.join('|'))
+      };
+
       if (ngModel) {
         options.onSelect = function( selectedDate ) {
           scope.$apply(function() {
@@ -59,7 +63,6 @@ angular.module('angular-pikaday', [])
           inputElement.val(picker.toString());
 
           picker._o.showTime = !!format.match(timeTokens.join('|'));
-          console.log(picker._o.showTime);
 
           if (ngModel) {
             ngModel.$validate();
