@@ -13,6 +13,9 @@ angular.module('angular-pikaday', [])
   option_overrides: {}
 })
 .directive('pikaday', function(pikaconfig){
+
+  var timeTokens = ['H', 'HH', 'h', 'hh', 'a', 'A', 's', 'ss', 'S', 'SS', 'SSS', 'Z', 'ZZ', 'LLL', 'LLLL', 'lll', 'llll'];
+
   return {
     require: '?ngModel',
     restrict: 'A', // A = Attribute
@@ -54,6 +57,10 @@ angular.module('angular-pikaday', [])
         if (format) {
           picker._o.format = format;
           inputElement.val(picker.toString());
+
+          picker._o.showTime = !!format.match(timeTokens.join('|'));
+          console.log(picker._o.showTime);
+
           if (ngModel) {
             ngModel.$validate();
           }
