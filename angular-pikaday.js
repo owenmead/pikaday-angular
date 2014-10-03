@@ -88,7 +88,7 @@ angular.module('angular-pikaday', [])
 
           var m;
           if (typeof moment === 'function') {
-              m = moment(value);
+              m = moment(value, picker._o.format);
           }
 
           if (m && m.isValid()) {
