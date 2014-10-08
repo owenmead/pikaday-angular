@@ -60,6 +60,9 @@ angular.module('angular-pikaday', [])
       attrs.$observe('pikaday', function(format) {
         if (format) {
           picker._o.format = format;
+          if(!pikaconfig.option_overrides.inputFormats) {
+            picker._o.inputFormats = picker._o.format;
+          }
           inputElement.val(picker.toString());
 
           picker._o.showTime = !!format.match(timeTokens.join('|'));
@@ -88,7 +91,11 @@ angular.module('angular-pikaday', [])
 
           var m;
           if (typeof moment === 'function') {
-              m = moment(value, picker._o.format);
+              if(picker._o.inputFormats && !(value instanceof Date)) {
+                  m = moment(value, picker._o.inputFormats);
+              } else {
+                  m = moment(value);
+              } 
           }
 
           if (m && m.isValid()) {
