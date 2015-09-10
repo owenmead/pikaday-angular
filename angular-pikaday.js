@@ -14,6 +14,17 @@ angular.module('angular-pikaday', [])
 })
 .directive('pikaday', function(pikaconfig){
 
+  // Load moment... if we can
+  if (moment && (typeof moment === 'function')) {
+    // defined globally
+  } else if (typeof exports === 'object') {
+    // CommonJS module
+    try { var moment = require('moment'); } catch (e) {}
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    try { var moment = req('moment'); } catch (e) {}
+  }
+
   var timeTokens = ['H', 'HH', 'h', 'hh', 'a', 'A', 's', 'ss', 'S', 'SS', 'SSS', 'Z', 'ZZ', 'LLL', 'LLLL', 'lll', 'llll'];
 
   return {
@@ -95,7 +106,7 @@ angular.module('angular-pikaday', [])
                   m = moment(value, picker._o.inputFormats);
               } else {
                   m = moment(value);
-              } 
+              }
           }
 
           if (m && m.isValid()) {
