@@ -40,7 +40,7 @@
 
     option_overrides: {}
   })
-  .directive('pikaday', function(pikaconfig){
+  .directive('pikaday', ['pikaconfig', function(pikaconfig) {
     var timeTokens = ['H', 'HH', 'h', 'hh', 'a', 'A', 's', 'ss', 'S', 'SS', 'SSS', 'Z', 'ZZ', 'LLL', 'LLLL', 'lll', 'llll'];
 
     return {
@@ -139,5 +139,5 @@
         pikaconfig.updatePikadayOptions();
       }
     };
-  });
+  }]);
 }));
